@@ -1,23 +1,7 @@
-// import logo from './logo.svg';
-// import './App.css';
-
-// src/App.js
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import Question from './components/Question';
-import Summary from './components/Summary'; // Add this import
-// import Question1 from './pages/Question1';
-// import Question2 from './pages/Question2';
-// import Question3 from './pages/Question3';
-// import Question4 from './pages/Question4';
-// import Question5 from './pages/Question5';
-// import Question6 from './pages/Question6';
-// import Question7 from './pages/Question7';
-// import Question8 from './pages/Question8';
-// import Question9 from './pages/Question9';
-// import Question10 from './pages/Question10';
-// import Question11 from './pages/Question11';
-// import Question12 from './pages/Question12';
+import Summary from './components/Summary';
 
 const Home = () => {
   return (
@@ -31,8 +15,12 @@ const Home = () => {
   );
 };
 
+
 const App = () => {
   const [answers, setAnswers] = useState([]);
+  const [isAnswerSelected, setIsAnswerSelected] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null); // Add this line
+  const navigate = useNavigate();
 
   const handleSelect = (questionNumber, selectedOption) => {
     setAnswers((prevAnswers) => {
@@ -41,30 +29,53 @@ const App = () => {
       return updatedAnswers;
     });
 
-    if (questionNumber === 12) {
-      window.location.href = '/summary';
+    // Set isAnswerSelected to true when an answer is selected
+    setIsAnswerSelected(true);
+
+    console.log("YOOOO handle select ran !!")
+  };
+
+  const handleNext = (questionNumber) => {
+    console.log("handle next called")
+    if (questionNumber === 2) {
+      navigate('/summary');
     } else {
-      window.location.href = `/question${questionNumber + 1}`;
+      // Only navigate to the next question if an answer is selected
+      if (isAnswerSelected) {
+        setSelectedOption(null); // Reset selected option
+        navigate(`/question${questionNumber + 1}`);
+        // Reset isAnswerSelected for the next question
+        setIsAnswerSelected(false);
+        console.log("just reset is answer selected for the next question")
+      }
+    }
+  };
+  
+  
+
+  const handleBack = (questionNumber) => {
+    if (questionNumber === 1) {
+    } else {
+      navigate(`/question${questionNumber - 1}`);
     }
   };
 
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/question1"
-          element={<Question question="What is the capital of France?" options={['Berlin', 'Madrid', 'Paris', 'Rome']} onSelect={(selectedOption) => handleSelect(1, selectedOption)} />}
-        />
-        <Route
-          path="/question2"
-          element={<Question question="Which programming language is used for React development?" options={['Python', 'JavaScript', 'Java', 'Ruby']} onSelect={(selectedOption) => handleSelect(2, selectedOption)} />}
-        />
-        {/* Repeat for other questions */}
-        <Route path="/summary" element={<Summary answers={answers} />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route
+  key="question1"
+  path="/question1"
+  element={<Question question="What is the capital of France?" options={['Berlin', 'Madrid', 'Paris', 'Rome']} onSelect={(selectedOption) => handleSelect(1, selectedOption)} onNext={() => handleNext(1)} onBack={() => handleBack(1)} setSelectedOption={setSelectedOption} />}
+/>
+<Route
+  key="question2"
+  path="/question2"
+  element={<Question question="Which programming language is best?" options={['Python', 'JavaScript', 'Java', 'Ruby']} onSelect={(selectedOption) => handleSelect(2, selectedOption)} onNext={() => handleNext(2)} onBack={() => handleBack(2)} setSelectedOption={setSelectedOption} />}
+/>
+
+      <Route path="/summary" element={<Summary answers={answers} />} />
+    </Routes>
   );
 };
 
