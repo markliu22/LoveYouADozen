@@ -15,11 +15,10 @@ const Home = () => {
   );
 };
 
-
 const App = () => {
   const [answers, setAnswers] = useState([]);
   const [isAnswerSelected, setIsAnswerSelected] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null); // Add this line
+  const [selectedOption, setSelectedOption] = useState(null);
   const navigate = useNavigate();
 
   const handleSelect = (questionNumber, selectedOption) => {
@@ -29,29 +28,23 @@ const App = () => {
       return updatedAnswers;
     });
 
-    // Set isAnswerSelected to true when an answer is selected
     setIsAnswerSelected(true);
-
-    console.log("YOOOO handle select ran !!")
+    console.log("YOOOO handle select ran !!");
   };
 
   const handleNext = (questionNumber) => {
-    console.log("handle next called")
-    if (questionNumber === 2) {
+    console.log("handle next called");
+    if (questionNumber === 3 && isAnswerSelected) {
       navigate('/summary');
     } else {
-      // Only navigate to the next question if an answer is selected
       if (isAnswerSelected) {
-        setSelectedOption(null); // Reset selected option
+        setSelectedOption(null);
         navigate(`/question${questionNumber + 1}`);
-        // Reset isAnswerSelected for the next question
         setIsAnswerSelected(false);
-        console.log("just reset is answer selected for the next question")
+        console.log("just reset is answer selected for the next question");
       }
     }
   };
-  
-  
 
   const handleBack = (questionNumber) => {
     if (questionNumber === 1) {
@@ -64,16 +57,41 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route
-  key="question1"
-  path="/question1"
-  element={<Question question="What is the capital of France?" options={['Berlin', 'Madrid', 'Paris', 'Rome']} onSelect={(selectedOption) => handleSelect(1, selectedOption)} onNext={() => handleNext(1)} onBack={() => handleBack(1)} setSelectedOption={setSelectedOption} />}
-/>
-<Route
-  key="question2"
-  path="/question2"
-  element={<Question question="Which programming language is best?" options={['Python', 'JavaScript', 'Java', 'Ruby']} onSelect={(selectedOption) => handleSelect(2, selectedOption)} onNext={() => handleNext(2)} onBack={() => handleBack(2)} setSelectedOption={setSelectedOption} />}
-/>
-
+        key="question1"
+        path="/question1"
+        element={<Question
+          question="What is the capital of France?"
+          options={['Berlin', 'Madrid', 'Paris', 'Rome']}
+          onSelect={(selectedOption) => handleSelect(1, selectedOption)}
+          onNext={() => handleNext(1)}
+          onBack={() => handleBack(1)}
+          setSelectedOption={setSelectedOption}
+        />}
+      />
+      <Route
+        key="question2"
+        path="/question2"
+        element={<Question
+          question="Which programming language is best?"
+          options={['Python', 'JavaScript', 'Java', 'Ruby']}
+          onSelect={(selectedOption) => handleSelect(2, selectedOption)}
+          onNext={() => handleNext(2)}
+          onBack={() => handleBack(2)}
+          setSelectedOption={setSelectedOption}
+        />}
+      />
+      <Route
+        key="question3"
+        path="/question3"
+        element={<Question
+          question="What is the largest planet in our solar system?"
+          options={['Mars', 'Venus', 'Jupiter', 'Saturn']}
+          onSelect={(selectedOption) => handleSelect(3, selectedOption)}
+          onNext={() => handleNext(3)}
+          onBack={() => handleBack(3)}
+          setSelectedOption={setSelectedOption}
+        />}
+      />
       <Route path="/summary" element={<Summary answers={answers} />} />
     </Routes>
   );
