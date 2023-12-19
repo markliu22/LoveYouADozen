@@ -1,4 +1,8 @@
 from flask import Flask, jsonify
+from flask_cors import CORS, cross_origin
+app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 from generate_bouquet import generate_bouquet
 import os
 
@@ -9,6 +13,7 @@ def ensure_directory_exists(directory):
         os.makedirs(directory)
 
 @app.route('/api/generate_bouquet', methods=['GET'])
+@cross_origin()
 def generate_bouquet_route():
     try:
         # Ensure the output directory exists
@@ -16,7 +21,15 @@ def generate_bouquet_route():
         ensure_directory_exists(output_folder)
 
         image_path = generate_bouquet()
-        return jsonify({'image_path': image_path})
+
+        # Explicitly set Content-Type header to application/json
+        response = jsonify({'image_path': image_path})
+        response.headers['Content-Type'] = 'application/json'
+
+        # Print headers for debugging
+        print(response.headers)
+
+        return response
     except Exception as e:
         return jsonify({'error': str(e)}), 500  # Internal Server Error
 
