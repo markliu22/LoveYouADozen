@@ -15,12 +15,12 @@ rows = 2
 columns = 2
 
 # Define the width and height of each flower in the bouquet
-flower_width = 200
-flower_height = 200
+flower_width = 130
+flower_height = 280
 
 # Set the amount of overlap (adjust these values as needed)
-x_overlap = 0
-y_overlap = 0
+x_overlap = 50
+y_overlap = 190
 
 # Calculate the canvas size considering potential overlap
 canvas_width = columns * flower_width - (columns - 1) * x_overlap
