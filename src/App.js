@@ -6,10 +6,10 @@ import Summary from './components/Summary';
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to the Quiz!</h1>
-      <p>Click the button below to start the test.</p>
+      <h1>TODO: title here</h1>
+      <p>TODO: prompt to start here</p>
       <Link to="/question1">
-        <button>Start Test</button>
+        <button>Start</button>
       </Link>
     </div>
   );
@@ -48,10 +48,17 @@ const App = () => {
 
   const handleBack = (questionNumber) => {
     if (questionNumber === 1) {
+      // Do nothing, as you can't go back from the first question
     } else {
-      navigate(`/question${questionNumber - 1}`);
+      if (isAnswerSelected) {
+        navigate(`/question${questionNumber - 1}`);
+      } else {
+        navigate(`/question${questionNumber - 1}`);
+        setIsAnswerSelected(true); // Set to true only if an answer was selected before
+      }
     }
   };
+  
 
   return (
     <Routes>
