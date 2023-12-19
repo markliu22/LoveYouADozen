@@ -1,18 +1,18 @@
 import React from 'react';
 
-const Summary = ({ answers }) => {
+const Summary = ({ answers, bouquetImagePath }) => {
   console.log('Answers:', answers);
 
   return (
     <div>
-      <h1>Answers Summary</h1>
-      <ul style={{ listStyleType: 'none' }}>
-        {answers.map((answer, index) => (
-          <li key={index}>
-            Question {index + 1}: {answer}
-          </li>
-        ))}
-      </ul>
+      <h2>Summary</h2>
+      {/* Render other summary information */}
+      {bouquetImagePath && (
+        <div>
+          <img src={bouquetImagePath} alt="Final Bouquet" />
+          <p>Other summary details...</p>
+        </div>
+      )}
     </div>
   );
 };

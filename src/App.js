@@ -19,6 +19,7 @@ const App = () => {
   const [answers, setAnswers] = useState([]);
   const [isAnswerSelected, setIsAnswerSelected] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [bouquetImagePath, setBouquetImagePath] = useState(null); // New state
   const navigate = useNavigate();
 
   const handleSelect = (questionNumber, selectedOption) => {
@@ -32,17 +33,28 @@ const App = () => {
     console.log("YOOOO handle select ran !!");
   };
 
-  const handleNext = (questionNumber) => {
+  const handleNext = async (questionNumber) => {
     console.log("handle next called");
-    if (questionNumber === 3 && isAnswerSelected) {
-      navigate('/summary');
-    } else {
-      if (isAnswerSelected) {
-        setSelectedOption(null);
-        navigate(`/question${questionNumber + 1}`);
-        setIsAnswerSelected(false);
-        console.log("just reset is answer selected for the next question");
+    try {
+      if (questionNumber === 3 && isAnswerSelected) {
+        // Make API request to generate the bouquet image
+        const response = await fetch('/api/generate_bouquet');
+        const data = await response.json();
+
+        // Update state with the image path
+        setBouquetImagePath(data.image_path);
+
+        navigate('/summary');
+      } else {
+        if (isAnswerSelected) {
+          setSelectedOption(null);
+          navigate(`/question${questionNumber + 1}`);
+          setIsAnswerSelected(false);
+          console.log("just reset is answer selected for the next question");
+        }
       }
+    } catch(error) {
+      console.error('Error in handleNext:', error);
     }
   };
 
@@ -99,7 +111,7 @@ const App = () => {
           setSelectedOption={setSelectedOption}
         />}
       />
-      <Route path="/summary" element={<Summary answers={answers} />} />
+      <Route path="/summary" element={<Summary answers={answers} bouquetImagePath={bouquetImagePath} />} />
     </Routes>
   );
 };
