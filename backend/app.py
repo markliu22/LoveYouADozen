@@ -1,12 +1,11 @@
 from flask import Flask, jsonify
 from flask_cors import CORS, cross_origin
-app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 from generate_bouquet import generate_bouquet
 import os
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def ensure_directory_exists(directory):
     if not os.path.exists(directory):

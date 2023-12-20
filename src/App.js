@@ -37,28 +37,15 @@ const App = () => {
     console.log("handle next called");
     try {
       if (questionNumber === 3 && isAnswerSelected) {
-        console.log("INSIDE IF PART OF handleNext ABOUT TO MAKE FETCH REQUEST")
-        // Make API request to generate the bouquet image
-        // const response = await fetch('/api/generate_bouquet');
-        // const data = await response.json();
-
-        // console.log("THIS IS THE DATA: ")
-        // console.log(data)
-
-        // // Update state with the image path
-        // setBouquetImagePath(data.image_path);
-
-        // navigate('/summary');
-        // const response = await fetch('/api/generate_bouquet');
         const response = await fetch('http://127.0.0.1:5000/api/generate_bouquet');
-        console.log('THIS IS THE RESPONSE')
-        console.log(response)
+        console.log("[handleNext] THIS IS THE response:")
+        console.log(response) 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
+  
         const data = await response.json();
-        console.log("THIS IS THE DATA:")
+        console.log("[handleNext] THIS IS THE DATA:")
         console.log(data)
         setBouquetImagePath(data.image_path);
         navigate('/summary');
