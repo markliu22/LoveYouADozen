@@ -6,6 +6,7 @@ from botocore.exceptions import NoCredentialsError
 from datetime import datetime
 
 # Assuming you have AWS credentials configured locally or on your server
+# **DEACTIVATED**
 AWS_ACCESS_KEY = 'AKIAWKKMVOTEGX7OGWO2'
 AWS_SECRET_KEY = 'EaFYV6idVpcHtBVwRcCVB81ozYCcpVVAGkLdkSkx'
 AWS_REGION = 'us-east-2'
